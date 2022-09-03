@@ -1,0 +1,4 @@
+lugar,latitud,longitud,simbolo,color
+Catedral Metropolitana de la Ciudad de México,19.434274568217358, -99.13320843803542,ok-sign,purple
+Templo Mayor,19.43475062782159, -99.1319092606943,ok-sign,orange
+Plaza de la Constitucion - Zócalo,19.432650354358657, -99.13318616642387,ok-sign,blue

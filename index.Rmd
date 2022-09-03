@@ -1,0 +1,363 @@
+---
+title: "TAREA 3: Mapas Interactivos - Folium"
+subtitle: "RMarkdown - Python"
+author: "Modificado: William Astocondor Felix - Source: Renzo Cáceres Rossi"
+date: "2022/08/30"
+output:
+  html_document:
+    code_download: TRUE
+    toc: TRUE
+    toc_float: TRUE
+---
+
+<!-- Folium es la librería de Python que nos permite crear Mapas Interactivos -->
+
+```{python, include=FALSE}
+
+import folium as fl
+
+import pandas as pd
+
+from folium.plugins import MiniMap
+
+from folium.plugins import FloatImage
+
+from folium import plugins
+
+```
+
+
+## Mapa Base
+
+```{python,fig.align="center",results='hide',collapse=TRUE}
+
+mapa_base = fl.Map()
+
+mapa_base
+
+```
+
+<!-- Esto es nuevo label HTML para hacer un salto/espacio-->
+<br>
+<br>
+
+## Latitud - Longitud
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=17)
+
+palacio_nacional_MX
+
+
+```
+
+<br>
+<br>
+
+## Marcador - Círculo - Logo
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=17)
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="darkblue",icon="fire")).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="orange",fill_color="red",weight=4,raidus=40,fill_opacity=0.4).add_to(palacio_nacional_MX)
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+
+palacio_nacional_MX
+
+```
+
+<br>
+<br>
+
+## MiniMap - Tiles - Full Screen
+
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=16,tiles="stamenterrain")
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="darkblue",icon="ok-sign")).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="orange",fill_color="red",weight=4,raidus=40,fill_opacity=0.4).add_to(palacio_nacional_MX)
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+## se cambio el codigo de minimap con respecto al codigo q clase 11 era con child ##
+## si no sale 2 mapas ## 
+MiniMap(toggle_display=True,position="bottomleft",tile_layer="stamenterrain").add_to(palacio_nacional_MX)
+
+palacio_nacional_MX
+
+```
+<!-- codigo para no estar tan juntos-->
+<br>
+<br>
+
+
+## Menú Tiles
+
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+# tiles: stamenterrain - stamentoner - stamenwatercolor - cartodbpositron - OpenStreetMap
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=17)
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="darkblue",icon="fire")).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="orange",fill_color="red",weight=4,raidus=40,fill_opacity=0.4).add_to(palacio_nacional_MX)
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+
+plugins.Fullscreen(position="topleft").add_to(palacio_nacional_MX)
+
+draw = plugins.Draw(export=True)
+
+
+fl.TileLayer("stamenterrain").add_to(palacio_nacional_MX)
+
+fl.TileLayer("stamentoner").add_to(palacio_nacional_MX)
+
+fl.TileLayer("stamenwatercolor").add_to(palacio_nacional_MX)
+
+fl.TileLayer("cartodbpositron").add_to(palacio_nacional_MX)
+
+fl.TileLayer("OpenStreetMap").add_to(palacio_nacional_MX)
+
+fl.LayerControl(position="bottomright").add_to(palacio_nacional_MX)
+
+
+palacio_nacional_MX
+
+
+```
+
+<br>
+<br>
+
+
+## Popup - Tooltip - Configuración
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=17)
+
+
+html='''
+<b>Lugar: Palacio Nacional </b><br>
+<b>Latitud: 19.432523957050446</b><br>
+<b>Longitud: -99.13116811357122</b><br>
+<b>Web:<a href='https://bit.ly/2FpS2tJ' target='_blank'> Palacio NAcional de México Web</a>
+<br><br>
+<center><img src='https://bit.ly/3BbRQxe' width=200 height=100></center>
+'''
+
+iframe = fl.IFrame(html=html,width=300,height=250)
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="darkblue",icon="fire"),popup=fl.Popup(iframe)).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="orange",fill_color="red",weight=4,raidus=40,fill_opacity=0.4,tooltip="Sede de Gobierno").add_to(palacio_nacional_MX)
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+
+plugins.Fullscreen(position="topleft").add_to(palacio_nacional_MX)
+
+draw = plugins.Draw(export=True)
+
+
+fl.TileLayer("stamenterrain").add_to(palacio_nacional_MX)
+
+fl.TileLayer("stamentoner").add_to(palacio_nacional_MX)
+
+fl.TileLayer("stamenwatercolor").add_to(palacio_nacional_MX)
+
+fl.TileLayer("cartodbpositron").add_to(palacio_nacional_MX)
+
+fl.TileLayer("OpenStreetMap").add_to(palacio_nacional_MX)
+
+fl.LayerControl(position="bottomright").add_to(palacio_nacional_MX)
+
+
+palacio_nacional_MX
+
+
+```
+
+<br>
+<br>
+
+
+## Múltiples Marcadores I
+
+```{python, results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=16)
+
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+text_001="<b>Catedral Metropolitana de la Ciudad de México</b>"
+
+text_002="<b>Templo Mayor</b>"
+
+text_003="<b>Plaza de la Constitucion - Zócalo</b>"
+
+fl.Marker(location=[19.434274568217358, -99.13320843803542],
+          icon=fl.Icon(color="darkblue",icon="ok-sign"),popup=fl.Popup(text_001,max_width=250)).add_to(palacio_nacional_MX)
+
+fl.Marker(location=[19.43475062782159, -99.1319092606943],
+          icon=fl.Icon(color="orange",icon="ok-sign"),popup=fl.Popup(text_002,max_width=200)).add_to(palacio_nacional_MX)
+
+fl.Marker(location=[19.432650354358657, -99.13318616642387],
+          icon=fl.Icon(color="blue",icon="ok-sign"),popup=fl.Popup(text_003,max_width=200)).add_to(palacio_nacional_MX)
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+
+### Se adiciono el punto Inicial del Palacion NAcional 
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="purple",icon="building", prefix='fa'),popup=fl.Popup("<b>Palacion Nacional</b>",max_width=250)).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="green",fill_color="red",weight=4,raidus=30,fill_opacity=0.4,tooltip="Sede de Gobierno").add_to(palacio_nacional_MX)
+          
+
+
+palacio_nacional_MX
+
+
+```
+
+<br>
+<br>
+
+## Múltiples Marcadores II - Data Frame
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+palacio_nacional_MX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=16)
+
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+centro_dataframe = pd.DataFrame({'lugar':['<b>Catedral Metropolitana de la Ciudad de México<b>','<b>Templo Mayo<b>r','<b>Plaza de la Constitucion - Zócalo<b>'],
+                                'latitud':[19.434274568217358,19.43475062782159,19.432650354358657],
+                                'longitud':[-99.13320843803542,-99.1319092606943,-99.13318616642387],
+                                'simbolo':['ok-sign','ok-sign','ok-sign'],
+                                'color':['dark-blue','orange','blue']})
+
+for i in centro_dataframe.itertuples():
+    fl.Marker(location=[i.latitud,i.longitud],
+              icon=fl.Icon(color=i.color,icon=i.simbolo),popup=fl.Popup(i.lugar,max_width=200)).add_to(palacio_nacional_MX)
+
+FloatImage(img_001,left=90,bottom=90).add_to(palacio_nacional_MX)
+
+
+### Se adiciono el punto Inicial del Palacion NAcional 
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="purple",icon="building", prefix='fa'),popup=fl.Popup("<b>Palacion Nacional</b>",max_width=250)).add_to(palacio_nacional_MX)
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="green",fill_color="red",weight=4,raidus=30,fill_opacity=0.4,tooltip="Sede de Gobierno").add_to(palacio_nacional_MX)
+          
+palacio_nacional_MX
+
+
+```
+
+
+<br>
+<br>
+
+## Múltiples Marcadores III - Data Frame from File
+
+```{python,results='hide',collapse=TRUE}
+
+# Palacio de Gobierno de Ciudad de Mexico (CDMX): 19.432523957050446, -99.13116811357122
+
+centro_CDMX = fl.Map(location=[19.432523957050446, -99.13116811357122],zoom_start=16)
+
+
+img_001 = "https://www.python.org/static/community_logos/python-powered-w-70x28.png"
+
+
+FloatImage(img_001,left=90,bottom=90).add_to(centro_CDMX)
+
+puntos = pd.read_csv("puntos_centro_CDMX.txt")
+
+puntos
+
+puntos_frame = pd.DataFrame(puntos)
+
+for i in puntos_frame.itertuples():
+    fl.Marker(location=[i.latitud,i.longitud],
+              icon=fl.Icon(color=i.color,icon=i.simbolo),popup=fl.Popup(i.lugar,max_width=200)).add_to(centro_CDMX)
+
+
+### Se adiciono el punto Inicial del Palacion NAcional 
+fl.Marker(location=[19.432523957050446, -99.13116811357122],
+          icon=fl.Icon(color="purple",icon="building", prefix='fa'),popup=fl.Popup("<b>Palacion Nacional</b>",max_width=250)).add_to(centro_CDMX)
+
+
+fl.Circle(location=[19.432523957050446, -99.13116811357122],
+          color="green",fill_color="red",weight=4,raidus=30,fill_opacity=0.4,tooltip="Sede de Gobierno").add_to(centro_CDMX)
+          
+centro_CDMX
+
+
+
+```
+
+<br>
+<br>
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+
+
